@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/reservations")
@@ -38,26 +39,40 @@ public class ReservationController {
             Model model
     ) {
         try {
-            // Construire l'URL de l'API
+            // Construire l'URL de l'API (sans filtre, on récupère tout)
             String apiUrl = backofficeApiUrl + reservationsEndpoint;
-
-            if (date != null && !date.isBlank()) {
-                apiUrl += "?date=" + date;
-            }
 
             logger.info("Appel API: {}", apiUrl);
 
-            // Appeler l'API du BackOffice et récupérer la réponse
+            // Appeler l'API du BackOffice et récupérer TOUTES les réservations
             ApiResponse response = restTemplate.getForObject(apiUrl, ApiResponse.class);
 
             // Extraire les réservations depuis la réponse
-            List<ReservationDto> reservations = (response != null && response.getData() != null)
+            List<ReservationDto> allReservations = (response != null && response.getData() != null)
                     ? response.getData()
                     : new ArrayList<>();
 
-            logger.info("Nombre de réservations reçues: {}", reservations.size());
+            logger.info("Nombre total de réservations reçues: {}", allReservations.size());
 
-            model.addAttribute("reservations", reservations);
+            // Filtrer côté FrontOffice si une date est fournie
+            List<ReservationDto> filteredReservations = allReservations;
+            if (date != null && !date.isBlank()) {
+                logger.info("Filtrage par date: {}", date);
+                filteredReservations = allReservations.stream()
+                    .filter(reservation -> {
+                        // Extraire la date de dateHeureArrivee (format: "2026-02-05 00:00:00.0")
+                        if (reservation.getDateHeureArrivee() != null) {
+                            String reservationDate = reservation.getDateHeureArrivee().substring(0, 10); // "2026-02-05"
+                            return reservationDate.equals(date);
+                        }
+                        return false;
+                    })
+                    .collect(Collectors.toList());
+                
+                logger.info("Nombre de réservations après filtrage: {}", filteredReservations.size());
+            }
+
+            model.addAttribute("reservations", filteredReservations);
             model.addAttribute("date", date);
             model.addAttribute("success", true);
 
