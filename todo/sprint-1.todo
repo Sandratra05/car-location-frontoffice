@@ -1,0 +1,10 @@
+TL : Sandratra ETU003126
+Dev Framework : Sariaka ETU003378
+Dev Spring MVC : Finoana ETU003203
+
+Todo  :
+- Creation des entites
+- Creation des controllers pour faire un appel REST vers le backoffice
+- Creation de DTO pour recevoir les donnees de reservation du backoffice
+- Creation de vue pour afficher les donnees de reservation du backoffice
+- Ajout du filtre date pour afficher les reservations d'une periode donnee

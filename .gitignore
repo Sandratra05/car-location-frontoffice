@@ -1,0 +1,50 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Build output
+target/
+build/
+
+# Maven
+dependency-reduced-pom.xml
+release.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+buildNumber.properties
+
+# Compiled / packaged files
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs and temp
+*.log
+logs/
+tmp/
+temp/
+
+# IDEs / Editors
+.vscode/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Spring Boot
+spring.log
+.restart/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.swp
