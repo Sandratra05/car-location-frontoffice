@@ -60,23 +60,3 @@ public class DataSourceConfig {
         return dataSource;
     }
 }
-//             if (port == -1) {
-//                 port = 5432; // Port par défaut PostgreSQL
-//             }
-//             String path = uri.getPath().substring(1);
-//             String userInfo = uri.getUserInfo();
-//             String[] credentials = userInfo.split(":");
-//             String username = credentials[0];
-//             String password = credentials[1];
-
-//             String jdbcUrl = "jdbc:postgresql://" + host + ":" + port + "/" + path;
-//             dataSource.setJdbcUrl(jdbcUrl);
-//             dataSource.setUsername(username);
-//             dataSource.setPassword(password);
-//             dataSource.setDriverClassName("org.postgresql.Driver");
-//         } catch (Exception e) {
-//             throw new RuntimeException("Invalid DATABASE_URL: " + databaseUrl, e);
-//         }
-//         return dataSource;
-//     }
-// }
