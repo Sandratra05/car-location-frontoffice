@@ -1,0 +1,15 @@
+TL : Sariaka ETU003378
+Dev Framework : Finoana ETU003203
+Dev Spring MVC : Sandratra ETU003126
+
+Todo sprint 2 :
+- Creer un fichier de configuration contenant le token
+
+- Stocker le token dans le fichier de configuration
+
+- Envoyer le token dans URL lors des appels api
+
+- Afficher les donnees Vehicule retournee par l'API
+
+- "Gestion message d'erreur (acces refuse, token 
+expire)"
