@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestClientException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +37,9 @@ public class ReservationController {
     @Value("${backoffice.api.reservations}")
     private String reservationsEndpoint;
 
+    @Value("${backoffice.api.token}")
+    private String token;
+
     @GetMapping
     public String listReservations(
             @RequestParam(value = "date", required = false) String date,
@@ -45,7 +52,13 @@ public class ReservationController {
             logger.info("Appel API: {}", apiUrl);
 
             // Appeler l'API du BackOffice et récupérer TOUTES les réservations
-            ApiResponse response = restTemplate.getForObject(apiUrl, ApiResponse.class);
+            HttpHeaders headers = new HttpHeaders();
+            if (token != null && !token.isEmpty()) {
+                headers.set("Authorization", "Bearer " + token);
+            }
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            ResponseEntity<ApiResponse> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, ApiResponse.class);
+            ApiResponse response = responseEntity.getBody();
 
             // Extraire les réservations depuis la réponse
             List<ReservationDto> allReservations = (response != null && response.getData() != null)
@@ -93,4 +106,3 @@ public class ReservationController {
         return "reservation/list";
     }
 }
-
