@@ -5,41 +5,32 @@ import java.util.List;
 public class ApiResponse {
     private String status;
     private int code;
-    private int count;
-    private List<ReservationDto> data;
+    private Data data;
 
-    public ApiResponse() {
-    }
+    public ApiResponse() {}
 
-    public String getStatus() {
-        return status;
-    }
+    // Getters et setters pour status, code, data
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public int getCode() { return code; }
+    public void setCode(int code) { this.code = code; }
+    public Data getData() { return data; }
+    public void setData(Data data) { this.data = data; }
 
-    public int getCode() {
-        return code;
-    }
+    public static class Data {
+        private List<ReservationDto> data;
+        private boolean success;
+        private String message;
 
-    public void setCode(int code) {
-        this.code = code;
-    }
+        public Data() {}
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public List<ReservationDto> getData() {
-        return data;
-    }
-
-    public void setData(List<ReservationDto> data) {
-        this.data = data;
+        // Getters et setters
+        public List<ReservationDto> getData() { return data; }
+        public void setData(List<ReservationDto> data) { this.data = data; }
+        public boolean isSuccess() { return success; }
+        public void setSuccess(boolean success) { this.success = success; }
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
     }
 }

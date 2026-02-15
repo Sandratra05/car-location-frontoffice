@@ -47,22 +47,24 @@ public class ReservationController {
     ) {
         try {
             // Construire l'URL de l'API (sans filtre, on récupère tout)
+            // Construire l'URL de l'API avec le token en paramètre de requête
             String apiUrl = backofficeApiUrl + reservationsEndpoint;
+            if (token != null && !token.isEmpty()) {
+                apiUrl += "?token=" + token;
+            }
 
             logger.info("Appel API: {}", apiUrl);
 
             // Appeler l'API du BackOffice et récupérer TOUTES les réservations
             HttpHeaders headers = new HttpHeaders();
-            if (token != null && !token.isEmpty()) {
-                headers.set("Authorization", "Bearer " + token);
-            }
+            // Supprimer la ligne headers.set("Authorization", ...) car on n'en a plus besoin
             HttpEntity<String> entity = new HttpEntity<>(headers);
             ResponseEntity<ApiResponse> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, ApiResponse.class);
             ApiResponse response = responseEntity.getBody();
 
             // Extraire les réservations depuis la réponse
-            List<ReservationDto> allReservations = (response != null && response.getData() != null)
-                    ? response.getData()
+            List<ReservationDto> allReservations = (response != null && response.getData() != null && response.getData().getData() != null)
+                    ? response.getData().getData()
                     : new ArrayList<>();
 
             logger.info("Nombre total de réservations reçues: {}", allReservations.size());
@@ -72,16 +74,16 @@ public class ReservationController {
             if (date != null && !date.isBlank()) {
                 logger.info("Filtrage par date: {}", date);
                 filteredReservations = allReservations.stream()
-                    .filter(reservation -> {
-                        // Extraire la date de dateHeureArrivee (format: "2026-02-05 00:00:00.0")
-                        if (reservation.getDateHeureArrivee() != null) {
-                            String reservationDate = reservation.getDateHeureArrivee().substring(0, 10); // "2026-02-05"
-                            return reservationDate.equals(date);
-                        }
-                        return false;
-                    })
-                    .collect(Collectors.toList());
-                
+                        .filter(reservation -> {
+                            // Extraire la date de dateHeureArrivee (format: "2026-02-05 00:00:00.0")
+                            if (reservation.getDateHeureArrivee() != null) {
+                                String reservationDate = reservation.getDateHeureArrivee().substring(0, 10); // "2026-02-05"
+                                return reservationDate.equals(date);
+                            }
+                            return false;
+                        })
+                        .collect(Collectors.toList());
+
                 logger.info("Nombre de réservations après filtrage: {}", filteredReservations.size());
             }
 
