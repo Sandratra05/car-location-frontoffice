@@ -1,0 +1,27 @@
+TL : Finoana ETU003203
+Dev Framework : Sandratra ETU003126 
+Dev Spring MVC : Sariaka ETU003378
+
+Todo sprint 2:
+-Il faut creer classes :
+    PlanningDTO
+    VehiculePlanningDTO
+    ReservationDTO
+-Appel API planification BO:
+    Creer service appel REST:getPlanningByDate(LocalDate date)
+
+-Page saisie date   
+Formulaire :
+    -Champ date
+    -Bouton generer planning
+
+-Page affichage planning avec:
+    -Liste vehicules
+    -Reservations associees
+    -Hotel destination
+    -Heure depart
+    -Heure retour
+
+-Page reservations non assignees avec:
+    -Reservations sans vehicule
+    -Message : "Not available"
